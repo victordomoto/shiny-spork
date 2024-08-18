@@ -1,0 +1,6 @@
+---
+- hosts: ec2-ubuntu
+  become: true
+  roles:
+    # - ubuntu_performance
+    - nginx_performance

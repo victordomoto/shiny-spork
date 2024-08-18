@@ -1,0 +1,21 @@
+- name: Update apt cache and upgrade packages
+  apt:
+    update_cache: yes
+    upgrade: dist
+
+- name: Install performance tuning packages
+  apt:
+    name:
+      - htop
+      - iotop
+      - sysstat
+    state: present
+- name: Set swappiness to a lower value
+  lineinfile:
+    path: /etc/sysctl.conf
+    line: 'vm.swappiness=10'
+    create: yes
+    state: present
+
+- name: Apply swappiness settings
+  command: sysctl -p

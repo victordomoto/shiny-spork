@@ -1,0 +1,13 @@
+- name: Optimize Nginx configuration
+  template:
+    src: ../template/nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+  notify:
+    - Reload Nginx
+
+- name: Optimize Nginx server block
+  template:
+    src: ../template/default.conf.j2
+    dest: /etc/nginx/sites-available/default
+  notify:
+    - Reload Nginx
