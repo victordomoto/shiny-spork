@@ -20,3 +20,16 @@ Se fosse algo um pouco mais complexo, como backup de banco de dados, poderíamos
 No caso de CI/CD temos muitas opções no mercado que são ótimas, como por exemplo o próprio Jenkins. Ou, se preferir, temos outras opções como o próprio GitHub.
 Essa etapa ela varia bastante de acordo com o software que estamos trabalhando, mas no caso vou criar um pipeline bem simples que representa a etapa de build, test e deploy de uma aplicação, que facilmente poderia se adaptar.
 
+## Estrutura da solução
+* Dentro da pasta **terraform** temos os arquivos do terraform que foram utilizados para criação e configuração da instância do EC2 na AWS.
+
+* Dentro da pasta **ansible** temos os arquivos utilizados para a execução da playbook que otimiza algumas tarefas do servidor em questão. Para executar essa playbook, basta preencher os dados em **ansible/hosts_vars/ec2-ubuntu1.yml** e rodar o seguinte comando:
+  ```bash
+  ansible-playbook -become -i inventory/testing/hosts ec2_configure.yml
+
+## Acessando página da aplicação que está rodando no servidor configurado:
+- [nginx page](http://52.90.47.51/)
+
+## Observações 
+Por ser uma infraestrutura simples, não tem muito o que explorar, como parte de monitoramento e log, rotinas de backup, automações.
+O que foi feito basicamente foi a criação e configuração dessa infra utilizando IaC e medidas de segurança, além da adição do pipeine como simulação do fluxo do desenvolvimento de um software.
