@@ -28,7 +28,7 @@ jobs:
 
       - name: Test
         run: |
-          if [ -f build/index.html ]; then
+          if [ -f public/index.html ]; then
             echo "Test passed: index.html exists."
           else
             echo "Test failed: index.html does not exist."
@@ -53,4 +53,4 @@ jobs:
           SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
           EC2_INSTANCE_IP: ${{ secrets.EC2_INSTANCE_IP }}
         run: |
-          ssh -i ec2_key.pem victor@$EC2_INSTANCE_IP 'cd /home/ec2-user/my-project && git pull origin main && sudo cp -r /home/ec2-user/my-project/* /var/www/html/ && sudo systemctl restart nginx'
+          ssh -i ec2_key.pem victor@$EC2_INSTANCE_IP 'cd /home/victor/shiny-spork && git pull origin main && sudo cp -r /home/victor/shiny-spork/* /var/www/html/ && sudo systemctl restart nginx'
