@@ -1,0 +1,56 @@
+name: Static Page Deployment Pipeline
+
+on:
+  push:
+    branches:
+      - main  
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build
+        run: |
+          mkdir -p build
+          cp -r public/* build/
+
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Test
+        run: |
+          if [ -f build/index.html ]; then
+            echo "Test passed: index.html exists."
+          else
+            echo "Test failed: index.html does not exist."
+            exit 1
+          fi
+
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: Set up SSH
+        env:
+          SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
+        run: |
+          echo "$EC2_SSH_KEY" > ec2_key.pem
+          chmod 400 ec2_key.pem
+
+      - name: Deploy to EC2
+        env:
+          SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
+          EC2_INSTANCE_IP: ${{ secrets.EC2_INSTANCE_IP }}
+        run: |
+          ssh -i ec2_key.pem victor@$EC2_INSTANCE_IP 'cd /home/ec2-user/my-project && git pull origin main && sudo cp -r /home/ec2-user/my-project/* /var/www/html/ && sudo systemctl restart nginx'
