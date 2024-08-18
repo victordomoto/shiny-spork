@@ -41,16 +41,17 @@ jobs:
     needs: test
 
     steps:
-      - name: Set up SSH
-        env:
-          SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
-        run: |
-          echo "$EC2_SSH_KEY" > ec2_key.pem
-          chmod 400 ec2_key.pem
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       - name: Deploy to EC2
-        env:
-          SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
-          EC2_INSTANCE_IP: ${{ secrets.EC2_INSTANCE_IP }}
-        run: |
-          ssh -i ec2_key.pem victor@$EC2_INSTANCE_IP 'cd /home/victor/shiny-spork && git pull origin main && sudo cp -r /home/victor/shiny-spork/* /var/www/html/ && sudo systemctl restart nginx'
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_INSTANCE_IP }}
+          username: victor 
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd /home/victor/shiny-spork
+            git pull origin main
+            sudo cp -r /home/victor/shiny-spork/* /var/www/html/
+            sudo systemctl restart nginx
