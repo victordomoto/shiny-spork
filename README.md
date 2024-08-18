@@ -1,64 +1,22 @@
-# Infra Challenge 20240202
+# Infra Challenge 20240202 - This is a challenge by Coodesh
 
-## Introdução
+## Parte 1 e 2 - Configuração do servidor com IaC
+Para realizar essa configuração iremos utilizar o Terraform para criar tanto a instância do EC2, que no caso é a t2.micro, quanto para a definição de regras do VPC.
+Como apenas eu terei acesso à VM, irei limitar, por exemplo, o acesso a conexões SSH apenas para o meu IP.
+E como se trata de uma aplicação, irei liberar a porta 80 para acesso público.
+A ideia é fazer uma configuração básica para rodar uma página do Nginx, usando o próprio user_data do Terraform.
+Se fosse algo mais complexo, eu utilizaria o Ansible para fazer toda a configuração desse servidor.
 
-Este é um teste para que possamos ver as suas habilidades como DevOps.
+Como melhoria de performance poderíamos utilizar o auto scalling e dependendo da quantidade de requisições que a aplicação fosse receber, melhorar o tipo da instância.
 
-Nesse teste você deverá configurar um servidor, aplicar os principais recursos de segurança e trabalhar com Infra as Code
+Já de configuração básica de servidores Linux, diria que o primeiro passo seria desabilitar ou diminuir o SWAP, tendo em vista que afeta diretamente a performance. 
+Além disso, fazer configuração de Cache do Nginx para que o tempo de acesso a partir da segunda vez, seja mais rápido.
+Todas essas configurações de servidores podemos implementar uma playbook no Ansible.
 
-[SPOILER] As instruções de entrega e apresentação do challenge estão no final deste Readme (=
+Questões de backups também não tem muito segredo, por não ter nada complexo que demande um script específico, poderíamos fazer um simples cronjob que copia por exemplo a página do Nginx para outro servidor, que analogamente serve para outros tipos de arquivos. Claro que pra isso demanda de criação de novas regras, talvez deixar uma porta alta específica pra isso.
+Se fosse algo um pouco mais complexo, como backup de banco de dados, poderíamos sim usar um cronjob para realizar essa rotina mas alinhada com um bash script, de tal forma que podemos definir muito mais detalhes.
 
-### Antes de começar
- 
-- Considere como deadline da avaliação a partir do início do teste. Caso tenha sido convidado a realizar o teste e não seja possível concluir dentro deste período, avise a pessoa que o convidou para receber instruções sobre o que fazer.
-- Documentar todo o processo de investigação para o desenvolvimento da atividade (README.md no seu repositório); os resultados destas tarefas são tão importantes do que o seu processo de pensamento e decisões à medida que as completa, por isso tente documentar e apresentar os seus hipóteses e decisões na medida do possível.
+## Parte 3 - Continous Delivery
+No caso de CI/CD temos muitas opções no mercado que são ótimas, como por exemplo o próprio Jenkins. Ou, se preferir, temos outras opções como o próprio GitHub.
+Essa etapa ela varia bastante de acordo com o software que estamos trabalhando, mas no caso vou criar um pipeline bem simples que representa a etapa de build, test e deploy de uma aplicação, que facilmente poderia se adaptar.
 
-
-## **Parte 1 - Configuração do Servidor**
-
-A sua tarefa consiste em configurar um servidor baseado na nuvem e instalar e configurar alguns componentes básicos.
-
-
-1. Configurar grupo de segurança na AWS
-2. Configuração da redes para o Servidor
-3. Configurar um servidor AWS (recomenda-se o freetier) executando uma versão Ubuntu LTS.
-4. Instalar e configurar qualquer software que você recomendaria em uma configuração de servidor padrão sob as perspectivas de segurança, desempenho, backup e monitorização.
-5. Instalar e configurar o nginx para servir uma página web HTML estática.
-
-
-
-## **Part 2 – Infra as Code**
-
-Como diferencial, você poderá configurar toda a infra-estrutura com ferramentas como:
-
-- Ansible
-- Terraform
-- AWS CDK ou CloudFormation
-
-Ao ter o projeto executando em um servidor e aplicando as melhores práticas de segurança com grupos de segurança e as configurações de rede criando completamente por código.
-
-
-## **Part 3 – Continuous Delivery**
-
-Desenhar e construir uma pipeline para apoiar a entrega contínua da aplicação de monitorização construída na Parte 2 no servidor configurado na Parte 1. Descrever a pipeline utilizando um diagrama de fluxo e explicar o objetivo e o processo de seleção usado em cada uma das ferramentas e técnicas específicas que compõem a sua pipeline. 
-
-## Readme do Repositório
-
-- Deve conter o título do projeto
-- Uma descrição sobre o projeto em frase
-- Deve conter uma lista com linguagem, framework e/ou tecnologias usadas
-- Como instalar e usar o projeto (instruções)
-- Não esqueça o [.gitignore](https://www.toptal.com/developers/gitignore)
-- Se está usando github pessoal, referencie que é um challenge by coodesh:  
-
->  This is a challenge by [Coodesh](https://coodesh.com/)
-
-## Finalização e Instruções para a Apresentação
-
-1. Adicione o link do repositório com a sua solução no teste
-2. Verifique se o Readme está bom e faça o commit final em seu repositório;
-3. Envie e aguarde as instruções para seguir. Sucesso e boa sorte. =)
-
-## Suporte
-
-Use a [nossa comunidade](https://discord.gg/rdXbEvjsWu) para tirar dúvidas sobre o processo ou envie uma mensagem diretamente a um especialista no chat da plataforma. 
