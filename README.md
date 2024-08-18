@@ -11,7 +11,7 @@ Como melhoria de performance poderíamos utilizar o auto scalling e dependendo d
 
 Já de configuração básica de servidores Linux, diria que o primeiro passo seria desabilitar ou diminuir o SWAP, tendo em vista que afeta diretamente a performance. 
 Além disso, fazer configuração de Cache do Nginx para que o tempo de acesso a partir da segunda vez, seja mais rápido.
-Todas essas configurações de servidores podemos implementar uma playbook no Ansible.
+Todas essas configurações de servidores podemos implementar com uma playbook no Ansible.
 
 Questões de backups também não tem muito segredo, por não ter nada complexo que demande um script específico, poderíamos fazer um simples cronjob que copia por exemplo a página do Nginx para outro servidor, que analogamente serve para outros tipos de arquivos. Claro que pra isso demanda de criação de novas regras, talvez deixar uma porta alta específica pra isso.
 Se fosse algo um pouco mais complexo, como backup de banco de dados, poderíamos sim usar um cronjob para realizar essa rotina mas alinhada com um bash script, de tal forma que podemos definir muito mais detalhes.
@@ -21,6 +21,8 @@ No caso de CI/CD temos muitas opções no mercado que são ótimas, como por exe
 Essa etapa ela varia bastante de acordo com o software que estamos trabalhando, mas no caso vou criar um pipeline bem simples que representa a etapa de build, test e deploy de uma aplicação, que facilmente poderia se adaptar.
 
 ## Estrutura da solução
+* Dentro da pasta **.github/workflows** temos a criação do pipeline que executa as 3 etapadas: build, test e deploy.
+  
 * Dentro da pasta **terraform** temos os arquivos do terraform que foram utilizados para criação e configuração da instância do EC2 na AWS.
 
 * Dentro da pasta **ansible** temos os arquivos utilizados para a execução da playbook que otimiza algumas tarefas do servidor em questão. Para executar essa playbook, basta preencher os dados em **ansible/hosts_vars/ec2-ubuntu1.yml** e rodar o seguinte comando:
