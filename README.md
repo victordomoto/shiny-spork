@@ -1,6 +1,6 @@
 # Infra Challenge 20240202 - This is a challenge by Coodesh
 
-## Parte 1 e 2 - Configuração do servidor com IaC
+## Parte 1 e 2 - Configuração do servidor com Infra as Code (IaC)
 Para realizar essa configuração iremos utilizar o Terraform para criar tanto a instância do EC2, que no caso é a t2.micro, quanto para a definição de regras do VPC.
 Como apenas eu terei acesso à VM, irei limitar, por exemplo, o acesso a conexões SSH apenas para o meu IP.
 E como se trata de uma aplicação, irei liberar a porta 80 para acesso público.
